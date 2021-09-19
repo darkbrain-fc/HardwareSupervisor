@@ -1,6 +1,6 @@
 # HardwareSupervisor
 
-*** Version 0.1.0 ***
+*Version 0.1.0*
 
 HardwareSupervisor is a windows service which will monitor Hardware state of the machine in which
 is installed. 
@@ -33,7 +33,7 @@ It's also a great way to see if HardwareSupervisor is working.
 Another great way to see data collected by HardwareSupervisor is to use
 HardwareSupervisorReinmeterPlugin: https://github.com/darkbrain-fc/HardwareSupervisorReinmeterPlugin
 
-## Future goal ##
-The most interest future work will insist to implement am automatic FAN controller to be able to 
+## Future goals ##
+* The most interest future work will insist to implement am automatic FAN controller to be able to 
 control PC temperatures and finally remove all bloat software that usually do this job.
-More sensors support should be also a great value.
+* More sensors support should be also a great value.
