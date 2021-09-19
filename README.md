@@ -29,9 +29,9 @@ A simple way to query HardwareSupervisor is via Power Shell:
 ```
 It's also a great way to see if HardwareSupervisor is working.
 
-### HardwareSupervisorReinmeterPlugin ###
+### HardwareSupervisorRainmeterPlugin ###
 Another great way to see data collected by HardwareSupervisor is to use
-HardwareSupervisorReinmeterPlugin: https://github.com/darkbrain-fc/HardwareSupervisorReinmeterPlugin
+HardwareSupervisorRainmeterPlugin: https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin
 
 ## Future goals ##
 * The most interest future work will insist to implement am automatic FAN controller to be able to
