@@ -56,7 +56,7 @@ You can specify all curve points througth it's coordinates: temperature (in cels
 You can add as many points as you like.
 Keep in mind that if temperature < min(temperature), it will be fixed to load(min(temperature)) and if
 temperature > max(temperature), it will be fixed to load(max(temperature)). Look at a curve example
-![curve](https://github.com/darkbrain-fc/HardwareSupervisor/assets/curve.jpg)
+![curve](https://github.com/darkbrain-fc/HardwareSupervisor/blob/master/assets/curve.jpg)
 So it's not necessary to introduce these points:
 ```yaml
     - temperature: 0
