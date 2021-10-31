@@ -119,5 +119,10 @@
   <ItemGroup>
     <None Include="NOTICE" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\curve.jpg" />
+    <Content Include="lib\CustomOpenHardwareMonitorLib.dll" />
+    <Content Include="lib\OpenHardwareMonitorLib.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
