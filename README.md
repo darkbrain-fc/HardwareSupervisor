@@ -12,7 +12,7 @@ necessary! So here it is HardwareSupervisor.
 
 ## AutoFanControl ##
 Dynamic Fan Control can be enabled setting autoFanControl to true in the config file.
-###** :fire: Beware!!! :fire: **###
+### :fire: Beware!!! :fire: ###
 A software failure or simply a wrong configuration may :fire: burn :fire: your hardware! So use it
 at your own risk!
 Let's see how to configure this feature. Here's an example of `config.yaml` file:
@@ -64,7 +64,7 @@ So it's not necessary to introduce these points:
     - temperature: 100
       load: 100
 ```
-###** :fire: NVIDIA RTX users :fire: **###
+### :fire: NVIDIA RTX users :fire: ###
 Even if the sensor of your beloved video card is detected it will not work!!! It's not well supported by
 OpenHardwareMonitor. But don't worry I've a patch for you that I will release soon.
 
