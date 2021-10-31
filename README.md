@@ -50,12 +50,12 @@ you should see something like that:
 2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /nvidiagpu/0
 ```
 On my machines three sensors are detected: `/lpc/it8631e/0`, `/lpc/it8631e/1` and `/nvidiagpu/0`. This sensors are special,
-They are temperature sensors with an enabled PWM controller unit to handle FAN spin, HardwareSupervisor can handle only these sensors.
+they are temperature sensors with an enabled PWM controller unit to handle FAN spin, HardwareSupervisor can handle only these sensors.
 `default` it's the default curve if no one can match.
 You can specify all curve points througth it's coordinates: temperature (in celsius) and load (in %).
 You can add as many points as you like.
-Keep in mind that if temperature < min(temperature), it will be fixed to load(min(temperature)) and if
-temperature > max(temperature), it will be fixed to load(max(temperature)). Look at a curve example
+Keep in mind that if `temperature < min(temperature)`, it will be fixed to `load(min(temperature))` and if
+`temperature > max(temperature)`, it will be fixed to `load(max(temperature))`. Look at a curve example
 ![curve](https://github.com/darkbrain-fc/HardwareSupervisor/blob/master/assets/curve.jpg)
 So it's not necessary to introduce these points:
 ```yaml
