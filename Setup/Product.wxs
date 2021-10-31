@@ -18,7 +18,7 @@
   under the License.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.1.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
+	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.1.9.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 		
     <MajorUpgrade AllowDowngrades="yes" />
@@ -26,7 +26,7 @@
 
 		<Feature Id="ProductFeature" Title="Setup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
-      <!--<ComponentGroupRef Id="ConfigFiles" /> -->
+      <ComponentGroupRef Id="ConfigFiles" />
       <ComponentGroupRef Id="ResourceFiles" />      
       <ComponentGroupRef Id="ServiceInstaller" />
     </Feature>
@@ -49,6 +49,9 @@
       <Component Id="NLog">
         <File Source="$(var.HardwareSupervisor.TargetDir)NLog.dll" KeyPath="yes"/>
       </Component>
+      <Component Id="YamlDotNet">
+        <File Source="$(var.HardwareSupervisor.TargetDir)YamlDotNet.dll" KeyPath="yes"/>
+      </Component>
     </ComponentGroup>
   </Fragment>
 
@@ -67,15 +70,14 @@
     </ComponentGroup>
   </Fragment>
 
-  <!--CONFIG FILES
+  <!--CONFIG FILES -->
   <Fragment>
     <ComponentGroup Id="ConfigFiles" Directory="INSTALLFOLDER">
       <Component  NeverOverwrite="yes" Permanent="yes">
-        <File Source="$(var.HardwareSupervisor.TargetDir)WinService.exe.config" KeyPath="yes"/>
+        <File Source="$(var.HardwareSupervisor.ProjectDir)config.yaml" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
   </Fragment>
-  -->
 
   <!--SERVICE-->
   <Fragment>
