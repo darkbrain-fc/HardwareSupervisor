@@ -60,7 +60,7 @@ Keep in mind that if `temperature < min(temperature)`, it will be fixed to `load
 So it's not necessary to introduce these points:
 ```yaml
     - temperature: 0
-      load: 30
+      load: 20
     - temperature: 100
       load: 100
 ```
