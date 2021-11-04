@@ -95,8 +95,7 @@
 							</div>
 						</section>
 						<section>
-              <a href="#" class="image"><img src="images/fan.jpg" alt="" data-position="bottom center" /></a>
-							<!-- <a href="#" class="image"><img src="images/mixer.jpg" alt="" data-position="25% 25%" /></a> -->
+							<a href="#" class="image"><img src="images/mixer.jpg" alt="" data-position="25% 25%" /></a>
 							<div class="content">
 								<div class="inner">
 									<h2>Live configuration</h2>
@@ -186,30 +185,37 @@
 					</section>
 
 				<!-- Gadgets -->
-					<section id="gadgets" class="wrapper style1 fade-up">
-						<div class="inner">
-							<h2>Gadgets</h2>
+        <section id="gadgets" class="wrapper style3 fade-up">
+          <div class="inner">
+            <h2>Gadgets</h2>
+            <p>
+              Information are published through Windows Management Instrumentation(<code>WMI</code>) protocol at namespace
+              <code>root/HardwareSupervisor</code> and are available to anyone without the need to be an Administrator account.
+            </p>
+            <div class="features">
               <section>
+                <span class="icon solid major fa-code"></span>
+                <h3>Power Shell</h3>
                 <p>
-                  Information are published through Windows Management Instrumentation(<code>WMI</code>) protocol at namespace <code>root/HardwareSupervisor</code> and
-                  are available to anyone without the need to be an Administrator account. Power Shell
-                  A simple way to query HardwareSupervisor is via Power Shell:
+                  A simple way to query HardwareSupervisor is via Power Shell, it's also a great way to see if HardwareSupervisor is working.
                 </p>
-                <pre class="prettyprint lang-bash">
-                  PS C:\temp> get-wmiobject -namespace "root/HardwareSupervisor" -Class Sensor
-                </pre>
-                <p>
-                  It's also a great way to see if HardwareSupervisor is working.
-                </p>
+                <code>PS C:\> get-wmiobject -namespace "root/HardwareSupervisor" -Class Sensor </code>
               </section>
               <section>
+                <span class="icon solid major fa-tint"></span>
+                <h3>Rainmeter</h3>
                 <p>
                   Another great way to see data collected by HardwareSupervisor is to use
                   <a href="https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin">HardwareSupervisorRainmeterPlugin</a>
                 </p>
+                <a href="https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin" class="image"><img src="images/rainmeter.jpg" alt="" data-position="25% 25%" /></a>
+                <ul class="actions">
+                  <li><a href="https://www.rainmeter.net/" class="button scrolly">Learn more on Rainmeter</a></li>
+                </ul>
               </section>
-						</div>
-					</section>
+            </div>
+          </div>
+        </section>
 			</div>
 
 		<!-- Footer -->
