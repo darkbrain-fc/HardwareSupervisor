@@ -93,6 +93,6 @@ Another great way to see data collected by HardwareSupervisor is to use
 HardwareSupervisorRainmeterPlugin: https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin
 
 ## Future goals ##
-* ~~ The most interest future work will insist to implement an automatic FAN controller to be able to
-control PC temperatures and finally remove all bloat software that usually does this job. ~~
+* ~~The most interest future work will insist to implement an automatic FAN controller to be able to
+control PC temperatures and finally remove all bloat software that usually does this job.~~
 * Replace OpenHardwareMonitor with LibreHardwareMonitor or a new OpenHardwareMonitor fork.
