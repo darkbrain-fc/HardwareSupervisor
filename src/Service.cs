@@ -25,8 +25,10 @@ using System.Timers;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using OpenHardwareMonitor.Hardware;
-using OpenHardwareMonitor.WMI;
+using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.WMI;
+using NLog.Targets.Wrappers;
+using System.Reflection;
 
 namespace HardwareSupervisor
 {
@@ -53,26 +55,37 @@ namespace HardwareSupervisor
                 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
                 m_exit = false;
                 LoggingConfiguration config = new LoggingConfiguration();
-                FileTarget logfile = new FileTarget("logfile") { FileName = LOG_FILE };
-                logfile.ArchiveEvery = FileArchivePeriod.Day;
-                logfile.MaxArchiveDays = 7;
-                config.AddRuleForAllLevels(logfile);
+                if (args != null && args.Length > 0 && args[0].Equals("console")) {
+                    Target consoleTarget = new ColoredConsoleTarget();
+                    consoleTarget = new AsyncTargetWrapper(consoleTarget);
+                    config.AddRuleForAllLevels(consoleTarget);
+                } else {
+                    FileTarget logfile = new FileTarget("logfile");
+                    logfile.FileName = LOG_FILE;
+                    logfile.ArchiveEvery = FileArchivePeriod.Day;
+                    logfile.MaxArchiveDays = 7;
+                    config.AddRuleForAllLevels(logfile);
+                }
                 LogManager.Configuration = config;
 
                 m_configurationManager = new ConfigurationManager();
                 m_configurationManager.Changed += OnConfigurationChanged;
                 m_configurationManager.Init();
 
+                string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 logger = LogManager.GetCurrentClassLogger();
+                logger.Info("Version: " + version);
                 logger.Info("Starting service");
                 m_updateVisitor = new UpdateVisitor();
                 m_computer = new Computer();
-                m_computer.MainboardEnabled = true;
-                m_computer.CPUEnabled = true;
-                m_computer.RAMEnabled = true;
-                m_computer.GPUEnabled = true;
-                m_computer.FanControllerEnabled = true;
-                m_computer.HDDEnabled = true;
+                m_computer.IsMotherboardEnabled = true;
+                m_computer.IsCpuEnabled = true;
+                m_computer.IsMemoryEnabled = true;
+                m_computer.IsGpuEnabled = true;
+                m_computer.IsControllerEnabled = true;
+                m_computer.IsStorageEnabled = true;
+                m_computer.IsNetworkEnabled = true;
+                m_computer.IsPsuEnabled = true;
                 m_autoControls = new AutoFanControl(m_computer, m_configurationManager);
                 m_wmiProvider = new WmiProvider(m_computer);
                 m_computer.HardwareAdded += new HardwareEventHandler(HardwareAdded);
@@ -98,7 +111,7 @@ namespace HardwareSupervisor
             try {
                 for (int i = 0; i < LogManager.Configuration.LoggingRules.Count; i++) {
                     LogManager.Configuration.LoggingRules[i].SetLoggingLevels(NLog.LogLevel.FromString(configuration.LogLevel), NLog.LogLevel.Fatal);
-                }
+                }                
                 LogManager.ReconfigExistingLoggers();
                 logger = LogManager.GetCurrentClassLogger();
             } catch (ArgumentException e) {

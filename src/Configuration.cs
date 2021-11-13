@@ -102,9 +102,10 @@ public class ConfigurationManager
     private void SettingConfigFilePermissions(string fileName)
     {
         if (File.Exists(fileName)) {
-            FileSecurity fileSecurity = File.GetAccessControl(fileName);
-            fileSecurity.AddAccessRule(new FileSystemAccessRule(ELEGIBLE_GROUP, FileSystemRights.WriteData, AccessControlType.Allow));
-            File.SetAccessControl(fileName, fileSecurity);
+            FileInfo fileInfo = new FileInfo(fileName);
+            FileSecurity fileSecurity = fileInfo.GetAccessControl();
+            fileSecurity.AddAccessRule(new FileSystemAccessRule(ELEGIBLE_GROUP, FileSystemRights.FullControl, AccessControlType.Allow));
+            fileInfo.SetAccessControl(fileSecurity);
         }
     }
 

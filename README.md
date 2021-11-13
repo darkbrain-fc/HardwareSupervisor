@@ -64,18 +64,15 @@ So it's not necessary to introduce these points:
     - temperature: 100
       load: 100
 ```
-### :fire: NVIDIA RTX users :fire: ###
-Even if the sensor of your beloved video card is detected it will not work!!! It's not well supported by
-OpenHardwareMonitor. But don't worry I've a patch for you that I will release soon.
 
 ### Live config ###
 You can tweak your config file without the need to restart the service! All modifications will be applied 
 immediately if they are parsed correctly. 
 
 ## Dependencies ##
-Right now HardwareSupervisor makes use of OpenHardwareMonitor library: https://openhardwaremonitor.org so
-all sensors supported by OpenHardwareMonitor are also available in HardwareSupervisor, and
-all sensors that aren't supported by OpenHardwareMonitor aren't supported by HardwareSupervisor.
+Right now HardwareSupervisor makes use of LibreHardwareMonitor library: https://github.com/LibreHardwareMonitor/LibreHardwareMonitor so
+all sensors supported by LibreHardwareMonitor are also available in HardwareSupervisor, and
+all sensors that aren't supported by LibreHardwareMonitor aren't supported by HardwareSupervisor.
 
 ## Connection to other softwares ##
 Information are published through Windows Management Instrumentation(WMI) protocol at
@@ -94,7 +91,8 @@ Another great way to see data collected by HardwareSupervisor is to use
 HardwareSupervisorRainmeterPlugin: https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin
 
 ## Future goals ##
-* ~~ The most interest future work will insist to implement an automatic FAN controller to be able to
-control PC temperatures and finally remove all bloat software that usually does this job. ~~
-* Replace OpenHardwareMonitor with LibreHardwareMonitor or a new OpenHardwareMonitor fork.
+* ~~The most interest future work will insist to implement an automatic FAN controller to be able to
+control PC temperatures and finally remove all bloat software that usually does this job.~~
+* ~~Replace OpenHardwareMonitor with LibreHardwareMonitor or a new LibreHardwareMonitor fork.~~
+* ~~RTX Support.~~
 

@@ -52,11 +52,15 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\HidSharp.2.1.0\lib\net35\HidSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LibreHardwareMonitorLib, Version=0.8.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\LibreHardwareMonitorLib.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>packages\NLog.4.7.8\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenHardwareMonitorLib">
-      <HintPath>lib\OpenHardwareMonitorLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -122,6 +126,7 @@
   <ItemGroup>
     <Content Include="assets\curve.jpg" />
     <Content Include="lib\CustomOpenHardwareMonitorLib.dll" />
+    <Content Include="lib\LibreHardwareMonitorLib.dll" />
     <Content Include="lib\OpenHardwareMonitorLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -18,9 +18,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 
 public class AutoFanControl : IDisposable
 {
@@ -86,9 +85,13 @@ public class AutoFanControl : IDisposable
             List<ISensor> fans = m_hardware_with_fans[hardware];
             Configuration configuration = m_configuration_manager.Configuration;
             foreach (ISensor control in entry.Value) {
-                ISensor temperature = temperatures[control.Index];
-                ISensor fan = fans[control.Index];
-                if (control.Control != null && temperature.Value.HasValue) {
+                ISensor temperature = temperatures.Find(x => x.Index == control.Index);
+                ISensor fan = fans.Find(x => x.Index == control.Index);
+                if (temperature == null && temperatures.Count > 0)
+                    temperature = temperatures[0]; // fallback on first one
+                if (fan == null && fans.Count > 0)
+                    fan = fans[0];
+                if (control.Control != null && temperature != null && fan != null && temperature.Value.HasValue) {
                     float fanLoad = 100f;
                     List<TemperaturePoint> curve;
                     if (!configuration.Sensors.TryGetValue(control.Hardware.Identifier.ToString() + "/" + control.Index, out curve) &&
@@ -97,6 +100,7 @@ public class AutoFanControl : IDisposable
                         curve = configuration.Default;
                     }
                     fanLoad = GetFANSpeed(curve, temperature.Value.Value);
+                    control.Control.SetSoftware(0); // Force setting value because it can be overriden by others softwares
                     control.Control.SetSoftware(fanLoad);
                     logger.Debug("[" + control.Hardware.Name + "] " + control.Name + " -> " + temperature.Value + "°C " + fan.Value + " rpm control at " + control.Value + "%");
                 }
@@ -108,6 +112,7 @@ public class AutoFanControl : IDisposable
     {
         List<IHardware> hwToRemove = new List<IHardware>();
         List<ISensor> sensorsToRemove = new List<ISensor>();
+        Dictionary<ISensor, ISensor> sensorsToReplace = new Dictionary<ISensor, ISensor>();
         Logger logger = LogManager.GetCurrentClassLogger();
         foreach (IHardware hardware in m_hardware_with_fans.Keys) {
             if (!m_hardware_with_controls.ContainsKey(hardware)) {
@@ -118,6 +123,11 @@ public class AutoFanControl : IDisposable
             if (!m_hardware_with_controls.ContainsKey(hardware)) {
                 hwToRemove.Add(hardware);
             }
+            foreach (ISensor sensor in hardware.Sensors) {
+                if (sensor.Name.ToLower().Contains("hot spot")) {
+                    sensorsToRemove.Add(sensor);
+                }
+            }
         }
         foreach (IHardware hardware in hwToRemove) {
             m_hardware_with_controls.Remove(hardware);
@@ -125,6 +135,10 @@ public class AutoFanControl : IDisposable
         foreach (KeyValuePair<IHardware, List<ISensor>> entry in m_hardware_with_controls) {
             foreach (ISensor sensor in entry.Value) {
                 List<ISensor> sensors;
+                if (sensor.Hardware.HardwareType == HardwareType.GpuNvidia || sensor.Hardware.HardwareType == HardwareType.GpuAmd) {
+                    // We can have multiple fans with multiple controls on an unique temperature sensor
+                    continue;                    
+                }
                 if (m_hardware_with_fans.TryGetValue(sensor.Hardware, out sensors)) {
                     if (sensor.Index >= sensors.Count)
                         sensorsToRemove.Add(sensor);
@@ -143,15 +157,19 @@ public class AutoFanControl : IDisposable
             List<ISensor> sensors;
             if (m_hardware_with_controls.TryGetValue(sensor.Hardware, out sensors)) {
                 sensors.Remove(sensor);
+            } 
+            if (m_hardware_with_temperatures.TryGetValue(sensor.Hardware, out sensors)) {
+                sensors.Remove(sensor);
+            }
+            if (m_hardware_with_fans.TryGetValue(sensor.Hardware, out sensors)) {
+                sensors.Remove(sensor);
             }
         }
         foreach (KeyValuePair<IHardware, List<ISensor>> entry in m_hardware_with_controls) {
             IHardware hardware = entry.Key;
             foreach (ISensor control in entry.Value) {
                 string name = control.Hardware.Identifier.ToString();
-                if (!Regex.Match(name, @"\d$").Success) {
-                    name += "/" + control.Index;
-                }
+                name = name + "/" + control.Index;
                 logger.Info("Found sensor: " + control.Hardware.Name + " => " + name);
             }
         }
@@ -175,7 +193,6 @@ public class AutoFanControl : IDisposable
     private void HardwareSensorAdded(ISensor sensor)
     {
         m_sensors.Add(sensor);
-
         if (sensor.SensorType == SensorType.Control) {
             List<ISensor> sensors;
             if (m_hardware_with_controls.TryGetValue(sensor.Hardware, out sensors)) {

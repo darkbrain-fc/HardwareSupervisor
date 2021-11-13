@@ -18,7 +18,7 @@
   under the License.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.1.9.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
+	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.3.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 		
     <MajorUpgrade AllowDowngrades="yes" />
@@ -43,14 +43,17 @@
   <!--DEPENDENCY FILES-->
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="OpenHardwareMonitor">
-        <File Source="$(var.HardwareSupervisor.TargetDir)OpenHardwareMonitorLib.dll" KeyPath="yes"/>
+      <Component Id="LibreHardwareMonitor">
+        <File Source="$(var.HardwareSupervisor.TargetDir)LibreHardwareMonitorLib.dll" KeyPath="yes"/>
       </Component>
       <Component Id="NLog">
         <File Source="$(var.HardwareSupervisor.TargetDir)NLog.dll" KeyPath="yes"/>
       </Component>
       <Component Id="YamlDotNet">
         <File Source="$(var.HardwareSupervisor.TargetDir)YamlDotNet.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="HidSharp">
+        <File Source="$(var.HardwareSupervisor.TargetDir)HidSharp.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
   </Fragment>

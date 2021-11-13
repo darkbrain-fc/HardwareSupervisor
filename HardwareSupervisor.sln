@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardwareSupervisor", "Hardw
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{E5C24C91-3F8A-48CE-9DB7-069FE7A14DFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardwareSupervisorConsole", "HardwareSupervisorConsole\HardwareSupervisorConsole.csproj", "{47360928-360F-4349-92D3-EECF109591DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93CF8D62-810A-49E5-BD75-E26B320D2D55} = {93CF8D62-810A-49E5-BD75-E26B320D2D55}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +34,14 @@ Global
 		{E5C24C91-3F8A-48CE-9DB7-069FE7A14DFE}.Release|Any CPU.ActiveCfg = Release|x86
 		{E5C24C91-3F8A-48CE-9DB7-069FE7A14DFE}.Release|x86.ActiveCfg = Release|x86
 		{E5C24C91-3F8A-48CE-9DB7-069FE7A14DFE}.Release|x86.Build.0 = Release|x86
+		{47360928-360F-4349-92D3-EECF109591DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{47360928-360F-4349-92D3-EECF109591DD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
