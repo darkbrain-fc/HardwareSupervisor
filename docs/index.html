@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Hardware Supervisor</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="HardwareSupervisor is a windows service that monitor the Hardware state of your machine and control your fans speed">
+    <meta name="keywords" content="Hardware, Monitor, Supervisor, WMI, OpenHardwareMonitor, LibreHardwareMonitor, Fan, Control, Speed, Temperature, Curve, Service, Windows, plugin, Rainmeter, Sensors">
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">Hardware Supervisor</a></li>
+							<li><a href="#features">Features</a></li>
+							<li><a href="#configuration">Configuration</a></li>
+							<li><a href="#gadgets">Gadgets</a></li>
+              <li><a href="https://github.com/darkbrain-fc/HardwareSupervisor/discussions">Support</a></li>
+              <li><a href="https://github.com/darkbrain-fc/HardwareSupervisor/releases">Download</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>Hardware Supervisor</h1>
+							<p>HardwareSupervisor is a windows service that monitor the Hardware state of your machine.</p>
+						</div>
+					</section>
+
+				<!-- Features -->
+					<section id="features" class="wrapper style2 spotlights">
+						<section>
+							<a href="#" class="image"><img src="images/service.jpg" alt="service" data-position="center center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Windows service</h2>
+									<p>
+                    Hardware Supervisor always runs in background as a Windows Service. So it's not necessary to enter Administrator password
+                    every time.
+                  </p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/cpu.jpg" alt="cpu" data-position="left center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Open Hardware Monitor</h2>
+									<p>
+                    Build on top of Open Hardware Monitor.
+                  </p>
+                  <ul class="actions">
+                    <li><a href="https://openhardwaremonitor.org/documentation/" class="button scrolly">Learn which Hardware is supported</a></li>
+                  </ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/wmi.jpg" alt="WMI" data-position="right center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Windows Management Instrumentation</h2>
+									<p>
+                    Sensors data can be accessible through <b>WMI</b> protocol.
+                  </p>
+                  <ul class="actions">
+                    <li><a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page" class="button scrolly">Learn more</a></li>
+                  </ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/fan.jpg" alt="fan" data-position="bottom center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Dynamic fan control</h2>
+									<p>
+                    FAN dynamically change their speed as hardware temperature change.
+                  </p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/mixer.jpg" alt="mixer" data-position="25% 25%" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Live configuration</h2>
+									<p>
+                    You can tweak your config file without the need to restart the service!
+                  </p>
+								</div>
+							</div>
+						</section>
+					</section>
+
+				<!-- Configuration -->
+					<section id="configuration" class="wrapper style3 fade-up">
+						<div class="inner">
+							<h2>Configuration</h2>
+              <h3>
+                <i class="fas fa-fire"></i>
+                Beware!!!
+                <i class="fas fa-fire"></i>
+              </h3>
+              <p>
+                A software failure or simply a wrong configuration may <b>burn</b> your hardware! So use it at your own risk!
+                Let's see how to configure this feature. Here's an example of <code>config.yaml</code> file:
+              </p>
+              <pre class="prettyprint lang-yaml" >
+                # CamelCase format
+                autoFanControl: true
+                # Debug, Info, Warn, Error
+                logLevel: Debug
+                sensors:
+                    # CPU
+                    /lpc/it8631e/0:
+                        - temperature: 30
+                          load: 50
+                        - temperature: 50
+                          load: 60
+                        - temperature: 70
+                          load: 100
+                default:
+                    - temperature: 20
+                      load: 30
+                    - temperature: 30
+                      load: 40
+                    - temperature: 40
+                      load: 60
+                    - temperature: 70
+                      load: 100
+              </pre>
+              <p>
+                Initially it is suggested to use a <i>Debug</i> logLevel to understand better what's going on. In <i>sensors</i> key you can specify a different curve
+                for each detected sensor. You can see which sensors are detected simply running HardwareSupervisor at least one time and looking to it's
+                log file, you should see something like that:
+              </p>
+              <pre class="prettyprint lang-log" >
+                2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /lpc/it8631e/0
+                2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /lpc/it8631e/1
+                2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /nvidiagpu/0
+              </pre>
+              <p>
+                In this example three sensors are detected: <code>/lpc/it8631e/0</code>, <code>/lpc/it8631e/1</code> and <code>/nvidiagpu/0</code>. This sensors are special,
+                they are temperature sensors with an enabled <b>PWM</b> controller unit to handle <b>FAN</b> spin, HardwareSupervisor can handle only these sensors.
+                 <i>default</i> it's the curve used if no one can match. You can specify all curve points through it's coordinates: temperature (in celsius)
+                 and load (in %). You can add as many points as you like. Keep in mind that <code>if temperature < min(temperature)</code>, load will be fixed to
+                <code>load(min(temperature))</code> and <code>if temperature >= max(temperature)</code>, load will be fixed to <code>load(max(temperature))</code>.
+                Look at a curve example
+              </p>
+              <a href="#" class="image"><img src="images/curve.jpg" alt="curve" data-position="top center" /></a>
+              <p>
+                So it's not necessary to introduce these points:
+              </p>
+              <pre class="prettyprint lang-yaml" >
+                - temperature: 0
+                  load: 20
+                - temperature: 100
+                  load: 100
+              </pre>
+              <h3>
+                <i class="fas fa-fire"></i>
+                NVIDIA RTX
+                <i class="fas fa-fire"></i>
+              </h3>
+              <p>
+                Even if the sensor of your beloved video card is detected it will not work!!! It's not well supported by OpenHardwareMonitor.
+                But don't worry I've a patch for you that I will release soon.
+              </p>
+						</div>
+					</section>
+
+				<!-- Gadgets -->
+        <section id="gadgets" class="wrapper style3 fade-up">
+          <div class="inner">
+            <h2>Gadgets</h2>
+            <p>
+              Information are published through Windows Management Instrumentation(<code>WMI</code>) protocol at namespace
+              <code>root/HardwareSupervisor</code> and are available to anyone without the need to be an Administrator account.
+            </p>
+            <div class="features">
+              <section>
+                <span class="icon solid major fa-code"></span>
+                <h3>Power Shell</h3>
+                <p>
+                  A simple way to query HardwareSupervisor is via Power Shell, it's also a great way to see if HardwareSupervisor is working.
+                </p>
+                <code>PS C:\> get-wmiobject -namespace "root/HardwareSupervisor" -Class Sensor </code>
+              </section>
+              <section>
+                <span class="icon solid major fa-tint"></span>
+                <h3>Rainmeter</h3>
+                <p>
+                  Another great way to see data collected by HardwareSupervisor is to use
+                  <a href="https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin">HardwareSupervisorRainmeterPlugin</a>
+                </p>
+                <a href="https://github.com/darkbrain-fc/HardwareSupervisorRainmeterPlugin" class="image"><img src="images/rainmeter.jpg" alt="rainmeter" data-position="25% 25%" /></a>
+                <ul class="actions">
+                  <li><a href="https://www.rainmeter.net/" class="button scrolly">Learn more on Rainmeter</a></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+            <li><a href="https://github.com/darkbrain-fc/HardwareSupervisor" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						<li>&copy; DarkBrain. All rights reserved.</li><li>Design taken from: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+      <link rel="stylesheet" href="assets/css/tomorrow-night.min.css" />
+      <script src="assets/js/run_prettify.js"></script>
+	</body>
+</html>

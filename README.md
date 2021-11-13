@@ -1,7 +1,6 @@
 # HardwareSupervisor
 
-HardwareSupervisor is a windows service which will monitor Hardware state of the machine in which
-is installed.
+HardwareSupervisor is a windows service that monitor the Hardware state of your machine.
 
 ## Idea behind it ##
 I was a lot frustrating to use an Administrator account to run all hardware monitoring
@@ -40,7 +39,7 @@ default:
     - temperature: 70
       load: 100
 ```
-Initially it is suggested to use a Debug `logLevel` to understad better what's going on.
+Initially it is suggested to use a Debug `logLevel` to understand better what's going on.
 In `sensors` key you can specify a different curve for each detected sensor. You can see which
 sensors are detected simply running HardwareSupervisor at least one time and looking to it's log file,
 you should see something like that:
@@ -52,7 +51,7 @@ you should see something like that:
 On my machines three sensors are detected: `/lpc/it8631e/0`, `/lpc/it8631e/1` and `/nvidiagpu/0`. This sensors are special,
 they are temperature sensors with an enabled PWM controller unit to handle FAN spin, HardwareSupervisor can handle only these sensors.
 `default` it's the default curve if no one can match.
-You can specify all curve points througth it's coordinates: temperature (in celsius) and load (in %).
+You can specify all curve points through it's coordinates: temperature (in celsius) and load (in %).
 You can add as many points as you like.
 Keep in mind that if `temperature < min(temperature)`, it will be fixed to `load(min(temperature))` and if
 `temperature > max(temperature)`, it will be fixed to `load(max(temperature))`. Look at a curve example
@@ -66,8 +65,8 @@ So it's not necessary to introduce these points:
 ```
 
 ### Live config ###
-You can tweak your config file without the need to restart the service! All modifications will be applied 
-immediately if they are parsed correctly. 
+You can tweak your config file without the need to restart the service! All modifications will be applied
+immediately if they are parsed correctly.
 
 ## Dependencies ##
 Right now HardwareSupervisor makes use of LibreHardwareMonitor library: https://github.com/LibreHardwareMonitor/LibreHardwareMonitor so
