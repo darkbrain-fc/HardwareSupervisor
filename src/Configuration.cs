@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
@@ -56,8 +57,7 @@ public class ConfigurationManager
 {
     public const string CONFIGURATION_FILE = "config.yaml";
     public const int RETRY_MILLISECONDS = 500;
-    public const int RETRY_TIMES = 3;
-    public const string ELEGIBLE_GROUP = "Authenticated Users";
+    public const int RETRY_TIMES = 3;    
     private object m_mutex;
     private IDeserializer m_deserializer;
     private ISerializer m_serializer;
@@ -104,7 +104,8 @@ public class ConfigurationManager
         if (File.Exists(fileName)) {
             FileInfo fileInfo = new FileInfo(fileName);
             FileSecurity fileSecurity = fileInfo.GetAccessControl();
-            fileSecurity.AddAccessRule(new FileSystemAccessRule(ELEGIBLE_GROUP, FileSystemRights.FullControl, AccessControlType.Allow));
+            var sid = new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null);
+            fileSecurity.AddAccessRule(new FileSystemAccessRule(sid, FileSystemRights.FullControl, AccessControlType.Allow));
             fileInfo.SetAccessControl(fileSecurity);
         }
     }

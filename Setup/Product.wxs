@@ -18,7 +18,7 @@
   under the License.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.3.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
+	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.3.1.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 		
     <MajorUpgrade AllowDowngrades="yes" />
