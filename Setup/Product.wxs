@@ -18,19 +18,39 @@
   under the License.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.3.1.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
+	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.4.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 		
     <MajorUpgrade AllowDowngrades="yes" />
     <MediaTemplate EmbedCab="yes" />
 
-		<Feature Id="ProductFeature" Title="Setup" Level="1">
+    <Feature Id="ProductFeature" Title="Setup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="ConfigFiles" />
       <ComponentGroupRef Id="ResourceFiles" />      
       <ComponentGroupRef Id="ServiceInstaller" />
+      
     </Feature>
-	</Product>
+
+    <CustomAction Id="PawnIOUninstall"
+            FileKey="PawnIO_setup.exe"
+            ExeCommand="-uninstall -silent"
+            Execute="deferred"
+            Return="check"
+            Impersonate="no" />
+
+    <CustomAction Id="PawnIOInstall"
+                FileKey="PawnIO_setup.exe"
+                ExeCommand="-install -silent"
+                Execute="deferred"
+                Return="check"
+                Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="PawnIOUninstall" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="PawnIOInstall" After="PawnIOUninstall">NOT Installed</Custom>
+    </InstallExecuteSequence>
+  </Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -46,6 +66,9 @@
       <Component Id="LibreHardwareMonitor">
         <File Source="$(var.HardwareSupervisor.TargetDir)LibreHardwareMonitorLib.dll" KeyPath="yes"/>
       </Component>
+      <Component Id="RAMSPDToolkit">
+        <File Source="$(var.HardwareSupervisor.TargetDir)RAMSPDToolkit-NDD.dll" KeyPath="yes"/>
+      </Component>
       <Component Id="NLog">
         <File Source="$(var.HardwareSupervisor.TargetDir)NLog.dll" KeyPath="yes"/>
       </Component>
@@ -54,6 +77,18 @@
       </Component>
       <Component Id="HidSharp">
         <File Source="$(var.HardwareSupervisor.TargetDir)HidSharp.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="System.Memory">
+        <File Source="$(var.HardwareSupervisor.TargetDir)System.Memory.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="System.Buffers">
+        <File Source="$(var.HardwareSupervisor.TargetDir)System.Buffers.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="System.Numerics.Vectors">
+        <File Source="$(var.HardwareSupervisor.TargetDir)System.Numerics.Vectors.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe">
+        <File Source="$(var.HardwareSupervisor.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
   </Fragment>
@@ -70,6 +105,9 @@
       <Component Id="NOTICE">
         <File Source="$(var.HardwareSupervisor.ProjectDir)NOTICE"/>
       </Component>
+      <Component Id="PawnIO">
+        <File Source="$(var.HardwareSupervisor.ProjectDir)PawnIO_setup.exe" KeyPath="yes"/>
+      </Component>
     </ComponentGroup>
   </Fragment>
 
@@ -81,7 +119,7 @@
       </Component>
     </ComponentGroup>
   </Fragment>
-
+  
   <!--SERVICE-->
   <Fragment>
     <ComponentGroup Id="ServiceInstaller" Directory="INSTALLFOLDER">
@@ -99,4 +137,5 @@
       </Component>
     </ComponentGroup>
   </Fragment>
+
 </Wix>

@@ -1,0 +1,1 @@
+﻿get-wmiobject -namespace "root/HardwareSupervisor" -Class Sensor | Sort-Object | Format-Table -Property Identifier, Name, Value
