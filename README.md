@@ -39,10 +39,10 @@ default:
     - temperature: 70
       load: 100
 ```
-Initially it is suggested to use a Debug `logLevel` to understand better what's going on.
-In `sensors` key you can specify a different curve for each detected sensor. You can see which
-sensors are detected simply running HardwareSupervisor at least one time and looking to it's log file,
-you should see something like that:
+Don't panic! The first time program start and no configuration file is found, a new one 
+is created with your sensors. In `sensors` key you can specify a different curve for each 
+detected sensor. By default a standard one is suggested.
+Here is an extract of the log file:
 ```
 2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /lpc/it8631e/0
 2021-10-31 12:10:13.3405|INFO|AutoControls|Found sensor: /lpc/it8631e/1

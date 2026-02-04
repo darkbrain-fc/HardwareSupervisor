@@ -165,6 +165,9 @@ public class AutoFanControl : IDisposable
                 sensors.Remove(sensor);
             }
         }
+        if (m_configuration_manager.IsNotConfigured()) {
+            m_configuration_manager.AddSensors(m_hardware_with_controls);
+        }
         foreach (KeyValuePair<IHardware, List<ISensor>> entry in m_hardware_with_controls) {
             IHardware hardware = entry.Key;
             foreach (ISensor control in entry.Value) {
