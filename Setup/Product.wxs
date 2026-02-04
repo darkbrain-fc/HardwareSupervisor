@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+﻿<!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
   distributed with this work for additional information
@@ -17,78 +16,69 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="HardwareSupervisor" Language="1033" Version="0.4.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Package Name="HardwareSupervisor" Language="1033" Version="0.4.0.0" Manufacturer="DarkBrain" UpgradeCode="7801a8ce-27c4-4bd3-950f-f6c1b4b5099b" InstallerVersion="200" Scope="perMachine">
+		
 		
     <MajorUpgrade AllowDowngrades="yes" />
     <MediaTemplate EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="Setup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="ConfigFiles" />
       <ComponentGroupRef Id="ResourceFiles" />      
-      <ComponentGroupRef Id="ServiceInstaller" />
-      
+      <ComponentGroupRef Id="ServiceInstaller" />      
     </Feature>
 
-    <CustomAction Id="PawnIOUninstall"
-            FileKey="PawnIO_setup.exe"
-            ExeCommand="-uninstall -silent"
-            Execute="deferred"
-            Return="check"
-            Impersonate="no" />
-
-    <CustomAction Id="PawnIOInstall"
-                FileKey="PawnIO_setup.exe"
-                ExeCommand="-install -silent"
-                Execute="deferred"
-                Return="check"
-                Impersonate="no" />
+    <CustomAction Id="PawnIOUninstall" ExeCommand="-uninstall -silent" Execute="deferred" Return="check" Impersonate="no" FileRef="ProjectDir_PawnIO_setup" />
+    <CustomAction Id="PawnIOInstall" ExeCommand="-install -silent" Execute="deferred" Return="check" Impersonate="no" FileRef="ProjectDir_PawnIO_setup" />
 
     <InstallExecuteSequence>
-      <Custom Action="PawnIOUninstall" After="InstallFiles">NOT Installed</Custom>
-      <Custom Action="PawnIOInstall" After="PawnIOUninstall">NOT Installed</Custom>
+      <Custom Action="PawnIOUninstall" After="InstallFiles" Condition="NOT Installed" />
+      <Custom Action="PawnIOInstall" After="PawnIOUninstall" Condition="NOT Installed" />
     </InstallExecuteSequence>
-  </Product>
+  </Package>
 
 	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<StandardDirectory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="HardwareSupervisor" />
-			</Directory>
-		</Directory>
-	</Fragment>
+			</StandardDirectory>
+		</Fragment>
 
   <!--DEPENDENCY FILES-->
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="LibreHardwareMonitor">
-        <File Source="$(var.HardwareSupervisor.TargetDir)LibreHardwareMonitorLib.dll" KeyPath="yes"/>
+        <File Id="TargetDir_LibreHardwareMonitorLib" Source="$(var.HardwareSupervisor.TargetDir)LibreHardwareMonitorLib.dll" KeyPath="yes" />
       </Component>
       <Component Id="RAMSPDToolkit">
-        <File Source="$(var.HardwareSupervisor.TargetDir)RAMSPDToolkit-NDD.dll" KeyPath="yes"/>
+        <File Id="TargetDir_RAMSPDToolkit_NDD_dll" Source="$(var.HardwareSupervisor.TargetDir)RAMSPDToolkit-NDD.dll" KeyPath="yes" />
       </Component>
       <Component Id="NLog">
-        <File Source="$(var.HardwareSupervisor.TargetDir)NLog.dll" KeyPath="yes"/>
+        <File Id="TargetDir_NLog_dll" Source="$(var.HardwareSupervisor.TargetDir)NLog.dll" KeyPath="yes" />
       </Component>
       <Component Id="YamlDotNet">
-        <File Source="$(var.HardwareSupervisor.TargetDir)YamlDotNet.dll" KeyPath="yes"/>
+        <File Id="TargetDir_YamlDotNet_dll" Source="$(var.HardwareSupervisor.TargetDir)YamlDotNet.dll" KeyPath="yes" />
       </Component>
       <Component Id="HidSharp">
-        <File Source="$(var.HardwareSupervisor.TargetDir)HidSharp.dll" KeyPath="yes"/>
+        <File Id="TargetDir_HidSharp_dll" Source="$(var.HardwareSupervisor.TargetDir)HidSharp.dll" KeyPath="yes" />
       </Component>
       <Component Id="System.Memory">
-        <File Source="$(var.HardwareSupervisor.TargetDir)System.Memory.dll" KeyPath="yes"/>
+        <File Id="TargetDir_System_Memory_dll" Source="$(var.HardwareSupervisor.TargetDir)System.Memory.dll" KeyPath="yes" />
       </Component>
       <Component Id="System.Buffers">
-        <File Source="$(var.HardwareSupervisor.TargetDir)System.Buffers.dll" KeyPath="yes"/>
+        <File Id="TargetDir_System_Buffers_dll" Source="$(var.HardwareSupervisor.TargetDir)System.Buffers.dll" KeyPath="yes" />
       </Component>
       <Component Id="System.Numerics.Vectors">
-        <File Source="$(var.HardwareSupervisor.TargetDir)System.Numerics.Vectors.dll" KeyPath="yes"/>
+        <File Id="TargetDir_System_Numerics_Vectors_dll" Source="$(var.HardwareSupervisor.TargetDir)System.Numerics.Vectors.dll" KeyPath="yes" />
       </Component>
       <Component Id="System.Runtime.CompilerServices.Unsafe">
-        <File Source="$(var.HardwareSupervisor.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes"/>
+        <File Id="TargetDir_System_Unsafe_dll" Source="$(var.HardwareSupervisor.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="DiskInfoToolkit.dll">
+        <File Id="TargetDir_DiskInfoToolkit_dll" Source="$(var.HardwareSupervisor.TargetDir)DiskInfoToolkit.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="BlackSharp.Core.dll">
+        <File Id="TargetDir_BlackSharp_Core_dll" Source="$(var.HardwareSupervisor.TargetDir)BlackSharp.Core.dll" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
@@ -97,25 +87,16 @@
   <Fragment>
     <ComponentGroup Id="ResourceFiles" Directory="INSTALLFOLDER">
       <Component Id="README">
-        <File Source="$(var.HardwareSupervisor.ProjectDir)README.md"/>
+        <File Id="ProjectDir_README_md" Source="$(var.HardwareSupervisor.ProjectDir)README.md" />
       </Component>
       <Component Id="LICENSE">
-        <File Source="$(var.HardwareSupervisor.ProjectDir)LICENSE"/>
+        <File Id="ProjectDir_LICENSE" Source="$(var.HardwareSupervisor.ProjectDir)LICENSE" />
       </Component>
       <Component Id="NOTICE">
-        <File Source="$(var.HardwareSupervisor.ProjectDir)NOTICE"/>
+        <File Id="ProjectDir_NOTICE" Source="$(var.HardwareSupervisor.ProjectDir)NOTICE" />
       </Component>
       <Component Id="PawnIO">
-        <File Source="$(var.HardwareSupervisor.ProjectDir)PawnIO_setup.exe" KeyPath="yes"/>
-      </Component>
-    </ComponentGroup>
-  </Fragment>
-
-  <!--CONFIG FILES -->
-  <Fragment>
-    <ComponentGroup Id="ConfigFiles" Directory="INSTALLFOLDER">
-      <Component  NeverOverwrite="yes" Permanent="yes">
-        <File Source="$(var.HardwareSupervisor.ProjectDir)config.yaml" KeyPath="yes"/>
+        <File Id="ProjectDir_PawnIO_setup" Source="$(var.HardwareSupervisor.ProjectDir)PawnIO_setup.exe" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
@@ -123,16 +104,9 @@
   <!--SERVICE-->
   <Fragment>
     <ComponentGroup Id="ServiceInstaller" Directory="INSTALLFOLDER">
-      <Component Id="HardwareSupervisor" >
-        <File Source="$(var.HardwareSupervisor.TargetDir)HardwareSupervisor.exe" KeyPath="yes"/>
-        <ServiceInstall Id="ServiceInstaller"
-                          Type="ownProcess"
-                          Name="HardwareSupervisor"
-                          DisplayName="Hardware Supervisor Service"
-                          Description="Hardware Supervisor Service"
-                          Start="auto"
-                          ErrorControl="normal"
-                          Account="LocalSystem"/>
+      <Component Id="HardwareSupervisor">
+        <File Id="TargetDir_HardwareSupervisor" Source="$(var.HardwareSupervisor.TargetDir)HardwareSupervisor.exe" KeyPath="yes" />
+        <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Name="HardwareSupervisor" DisplayName="Hardware Supervisor Service" Description="Hardware Supervisor Service" Start="auto" ErrorControl="normal" Account="LocalSystem" />
         <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="HardwareSupervisor" Wait="yes" />
       </Component>
     </ComponentGroup>

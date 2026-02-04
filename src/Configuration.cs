@@ -16,6 +16,7 @@
     specific language governing permissions and limitations
     under the License.  
 */
+using LibreHardwareMonitor.Hardware;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,9 @@ public class ConfigurationManager
 {
     public const string CONFIGURATION_FILE = "config.yaml";
     public const int RETRY_MILLISECONDS = 500;
-    public const int RETRY_TIMES = 3;    
+    public const int RETRY_TIMES = 3;
+    public const string CONFIG_INIT = "# CamelCase format\r\nautoFanControl: false\r\n# Debug, Info, Warn, Error\r\nlogLevel: Info\r\nsensors:";
+    public const string CONFIG_SENSOR = "\r\n  - temperature: 20\r\n    load: 30\r\n  - temperature: 30\r\n    load: 40\r\n  - temperature: 40\r\n    load: 60\r\n  - temperature: 70\r\n    load: 100\r\n";
     private object m_mutex;
     private IDeserializer m_deserializer;
     private ISerializer m_serializer;
@@ -94,6 +97,9 @@ public class ConfigurationManager
     {
         string path = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
         m_filename = path + @"\" + CONFIGURATION_FILE;
+        if (!File.Exists(m_filename)) {
+            File.Create(m_filename);
+        }
         SettingConfigFilePermissions(m_filename);
         CreateFileWatcher(path);
         OnChanged(this, new FileSystemEventArgs(WatcherChangeTypes.Changed, path, CONFIGURATION_FILE));
@@ -132,6 +138,9 @@ public class ConfigurationManager
         );
         lock (m_mutex) {
             Configuration = m_deserializer.Deserialize<Configuration>(yml);
+            if (Configuration == null) {
+                Configuration = new Configuration();
+            }
             if (Configuration.Default.Count == 0) {
                 Configuration.Default.Add(new TemperaturePoint(30, 20));
                 Configuration.Default.Add(new TemperaturePoint(50, 50));
@@ -192,4 +201,29 @@ public class ConfigurationManager
             logger.Error(error);
         }
     }
+
+    public Boolean IsNotConfigured() {
+        lock (m_mutex) {
+            return Configuration.Sensors.Count == 0;
+        }
+    }
+
+    public void AddSensors(Dictionary<IHardware, List<ISensor>> sensors) {
+        lock (m_mutex) {
+            string config = CONFIG_INIT;
+            foreach (KeyValuePair<IHardware, List<ISensor>> entry in sensors) {
+                IHardware hardware = entry.Key;
+                foreach (ISensor control in entry.Value) {
+                    string name = control.Hardware.Identifier.ToString();
+                    name = name + "/" + control.Index;
+                    config += "\r\n  " + name + ":";
+                    config += CONFIG_SENSOR;
+                }
+            }
+            config += "\r\ndefault:";
+            config += CONFIG_SENSOR;
+            WriteConfigFile(config);
+        }
+    }
+
 }
